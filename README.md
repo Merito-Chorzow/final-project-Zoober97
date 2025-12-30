@@ -1,1 +1,44 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/XfC33h1O)
+
+# PPN ESP32 Stacja Pogodowa
+
+Projekt stacji pogodowej na mikrokontrolerze ESP32 z obsługą WiFi i serwera WWW.
+
+## Setup
+
+1. **Zainstaluj ESP-IDF**
+    - Pobierz [ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/)
+    - Ustaw zmienne środowiskowe
+
+2. **Sklonuj repozytorium**
+    ```bash
+    git clone <repo-url>
+    cd final-project-Zoober97/PPN_ESP32_StacjaPogodowa_Marchewka_181257
+    ```
+
+3. **Konfiguracja**
+    ```bash
+    idf.py menuconfig
+    ```
+
+## Build
+
+```bash
+idf.py build
+```
+
+## Uruchomienie
+
+1. **Podłącz urządzenie** przez USB do komputera
+
+2. **Wgraj firmware**
+    ```bash
+    idf.py -p PORT flash
+    ```
+    (zamień PORT na port szeregowy, np. COM3 lub /dev/ttyUSB0)
+
+3. **Monitor**
+    ```bash
+    idf.py -p PORT monitor
+    ```
+
+4. **Połącz się z WiFi** i otwórz serwer WWW na adresie IP urządzenia
