@@ -104,6 +104,8 @@ float ds18b20_read(void)
 //Add a new sample to the moving average
 void avg_add_sample(float value)
 {
+    if((value == NAN || value > samples[index]+1 || value < samples[index]-1) && count >= AVG_WINDOW)
+        return;
     samples[index] = value;
     index = (index + 1) % AVG_WINDOW;
 
