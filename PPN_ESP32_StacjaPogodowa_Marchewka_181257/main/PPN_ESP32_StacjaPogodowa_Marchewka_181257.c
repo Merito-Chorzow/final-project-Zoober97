@@ -6,6 +6,7 @@
 #include "ds18b20.h"
 #include "esp_log.h"
 #include "wifi_ap.h"
+#include "web_server.h"
 
 #define LED_GPIO GPIO_NUM_2
 #define TAG "MAIN"
@@ -14,6 +15,7 @@ void app_main(void)
     fsm_init();
     ds18b20_init();
     wifi_ap_init();
+    web_server_start();
 
     float t = ds18b20_read();
     if (isnan(t)) {
