@@ -7,6 +7,7 @@
 #include "esp_log.h"
 #include "wifi_ap.h"
 #include "web_server.h"
+#include "cli.h"
 
 #define LED_GPIO GPIO_NUM_2
 #define TAG "MAIN"
@@ -16,6 +17,7 @@ void app_main(void)
     ds18b20_init();
     wifi_ap_init();
     web_server_start();
+    cli_start();
 
     float t = ds18b20_read();
     if (isnan(t)) {
@@ -23,19 +25,16 @@ void app_main(void)
         return;
     }
 
-    gpio_set_direction(LED_GPIO, GPIO_MODE_OUTPUT);
+    // gpio_set_direction(LED_GPIO, GPIO_MODE_OUTPUT);
     while (true)
     {
-        gpio_set_level(LED_GPIO, 1);
-        vTaskDelay(pdMS_TO_TICKS(500));
-        gpio_set_level(LED_GPIO, 0);
-        vTaskDelay(pdMS_TO_TICKS(500));
+    //     gpio_set_level(LED_GPIO, 1);
+    //     vTaskDelay(pdMS_TO_TICKS(500));
+    //     gpio_set_level(LED_GPIO, 0);
+        vTaskDelay(pdMS_TO_TICKS(period_ms));
 
         t = ds18b20_read();
-        ESP_LOGI(TAG, "Temperature: %.2f °C", t);
         avg_add_sample(t);
-        ESP_LOGI(TAG, "AVG Temperature: %.2f °C", avg_get());
-
     }
     
 }

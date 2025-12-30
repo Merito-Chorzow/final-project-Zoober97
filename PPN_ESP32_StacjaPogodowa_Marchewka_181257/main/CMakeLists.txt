@@ -5,6 +5,7 @@ idf_component_register(
         "../drivers/ds18b20.c" 
         "../app/wifi_ap.c"
         "../app/web_server.c"
+        "../app/cli.c"
     INCLUDE_DIRS 
         "../include" 
         "../app" 
@@ -16,4 +17,5 @@ idf_component_register(
         nvs_flash
         esp_netif
         esp_http_server
+        driver
 )
