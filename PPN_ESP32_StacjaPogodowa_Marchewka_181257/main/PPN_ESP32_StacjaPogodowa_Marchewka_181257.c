@@ -18,10 +18,11 @@ void app_main(void)
     wifi_ap_init();
     web_server_start();
     cli_start();
-
+    fsm_start();
     float t = ds18b20_read();
     if (isnan(t)) {
         ESP_LOGE(TAG, "DS18B20 error");
+        fsm_error();
         return;
     }
 
@@ -31,8 +32,11 @@ void app_main(void)
     //     gpio_set_level(LED_GPIO, 1);
     //     vTaskDelay(pdMS_TO_TICKS(500));
     //     gpio_set_level(LED_GPIO, 0);
-        vTaskDelay(pdMS_TO_TICKS(period_ms));
 
+        fsm_idle();
+        vTaskDelay(pdMS_TO_TICKS(period_ms));
+        fsm_start();
+        
         t = ds18b20_read();
         avg_add_sample(t);
     }

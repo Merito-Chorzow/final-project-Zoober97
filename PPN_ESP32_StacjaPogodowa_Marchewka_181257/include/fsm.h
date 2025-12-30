@@ -9,3 +9,10 @@ typedef enum {
 } system_state_t;
 
 void fsm_init();
+
+system_state_t fsm_get_state();
+
+void fsm_start();
+void fsm_reset();
+void fsm_error();
+void fsm_idle();

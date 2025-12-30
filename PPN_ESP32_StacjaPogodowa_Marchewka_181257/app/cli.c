@@ -3,6 +3,7 @@
 #include "esp_log.h"
 #include "string.h"
 #include "ds18b20.h"
+#include "fsm.h"
 
 #define UART_NUM UART_NUM_0
 #define BUF_SIZE 128
@@ -44,13 +45,21 @@ static void cli_process(char *cmd)
             cli_send("ERR BAD_VALUE");
         }
     }
-    // else if (strncmp(cmd, "STAT", 4) == 0) {
-    //     char buf[64];
-    //     snprintf(buf, sizeof(buf),
-    //              "STATE=%d",
-    //              fsm_get_state());
-    //     cli_send(buf);
-    // }
+    else if (strncmp(cmd, "STAT", 4) == 0) {
+        char buf[64];
+        snprintf(buf, sizeof(buf),
+                 "STATE=%d",
+                 fsm_get_state());
+        cli_send(buf);
+    }
+    else if (strncmp(cmd, "RESET", 5) == 0) {
+        char buf[64];
+        fsm_reset();
+        snprintf(buf, sizeof(buf),
+                 "STATE=%d",
+                 fsm_get_state());
+        cli_send(buf);
+    }
     else {
         cli_send("ERR UNKNOWN_CMD");
     }
