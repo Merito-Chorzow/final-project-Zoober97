@@ -1,8 +1,10 @@
 #include "fsm.h"
 #include "esp_log.h"
 
+#define TAG "FSM"
 
 static system_state_t state = STATE_INIT;
+
 
 // Initialize the FSM
 void fsm_init(void)
