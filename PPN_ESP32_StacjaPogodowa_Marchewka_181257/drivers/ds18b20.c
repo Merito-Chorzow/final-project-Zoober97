@@ -4,6 +4,12 @@
 
 #define DS_PIN GPIO_NUM_4
 
+#define AVG_WINDOW 5   // liczba próbek
+
+static float samples[AVG_WINDOW];
+static int index = 0;
+static int count = 0;
+
 //Reset 1-Wire bus and check for presence pulse
 static int ow_reset(void)
 {
@@ -93,4 +99,25 @@ float ds18b20_read(void)
 
     int16_t raw = (msb << 8) | lsb;
     return raw / 16.0;
+}
+
+//Add a new sample to the moving average
+void avg_add_sample(float value)
+{
+    samples[index] = value;
+    index = (index + 1) % AVG_WINDOW;
+
+    if (count < AVG_WINDOW)
+        count++;
+}
+
+//Get the current moving average
+float avg_get()
+{
+    float sum = 0.0f;
+
+    for (int i = 0; i < count; i++)
+        sum += samples[i];
+
+    return sum / count;
 }

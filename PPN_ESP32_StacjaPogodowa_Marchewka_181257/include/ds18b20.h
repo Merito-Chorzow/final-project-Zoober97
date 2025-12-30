@@ -11,3 +11,6 @@ void ds18b20_init();
  *         NAN jeśli błąd (brak czujnika)
  */
 float ds18b20_read();
+
+float avg_get();
+void avg_add_sample(float value);

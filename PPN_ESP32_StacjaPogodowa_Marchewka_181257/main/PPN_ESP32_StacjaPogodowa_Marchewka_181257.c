@@ -33,6 +33,8 @@ void app_main(void)
 
         t = ds18b20_read();
         ESP_LOGI(TAG, "Temperature: %.2f °C", t);
+        avg_add_sample(t);
+        ESP_LOGI(TAG, "AVG Temperature: %.2f °C", avg_get());
 
     }
     
