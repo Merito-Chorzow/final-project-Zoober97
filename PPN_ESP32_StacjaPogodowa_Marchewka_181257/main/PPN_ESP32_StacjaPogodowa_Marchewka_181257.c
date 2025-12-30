@@ -5,6 +5,7 @@
 #include "fsm.h"
 
 #define LED_GPIO GPIO_NUM_2
+
 void app_main(void)
 {
     fsm_init();
