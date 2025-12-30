@@ -5,6 +5,7 @@
 #include "fsm.h"
 #include "ds18b20.h"
 #include "esp_log.h"
+#include "wifi_ap.h"
 
 #define LED_GPIO GPIO_NUM_2
 #define TAG "MAIN"
@@ -12,7 +13,8 @@ void app_main(void)
 {
     fsm_init();
     ds18b20_init();
-    
+    wifi_ap_init();
+
     float t = ds18b20_read();
     if (isnan(t)) {
         ESP_LOGE(TAG, "DS18B20 error");

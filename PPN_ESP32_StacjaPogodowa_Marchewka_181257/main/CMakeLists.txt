@@ -1,2 +1,17 @@
-idf_component_register(SRCS "PPN_ESP32_StacjaPogodowa_Marchewka_181257.c" "../app/fsm.c" "../drivers/ds18b20.c"
-                    INCLUDE_DIRS "../include" "../app" "../drivers" REQUIRES esp_driver_gpio)
+idf_component_register(
+    SRCS 
+        "PPN_ESP32_StacjaPogodowa_Marchewka_181257.c" 
+        "../app/fsm.c" 
+        "../drivers/ds18b20.c" 
+        "../app/wifi_ap.c"
+    INCLUDE_DIRS 
+        "../include" 
+        "../app" 
+        "../drivers" 
+    REQUIRES 
+        esp_driver_gpio
+        esp_wifi
+        esp_event
+        nvs_flash
+        esp_netif
+)
