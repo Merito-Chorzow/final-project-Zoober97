@@ -23,7 +23,7 @@ system_state_t fsm_get_state()
 void fsm_start()
 {
     if (state == STATE_IDLE) {
-        ESP_LOGI(TAG, "FSM START");
+        //ESP_LOGI(TAG, "FSM START");
         state = STATE_RUN;
     }
 }
@@ -31,7 +31,7 @@ void fsm_start()
 // Reset the FSM to INIT state
 void fsm_reset()
 {
-    ESP_LOGI(TAG, "FSM RESET");
+    //ESP_LOGI(TAG, "FSM RESET");
     state = STATE_INIT;
 }
 
@@ -45,6 +45,6 @@ void fsm_error()
 // Set the FSM to IDLE state
 void fsm_idle()
 {
-    ESP_LOGI(TAG, "FSM IDLE");
+    //ESP_LOGI(TAG, "FSM IDLE");
     state = STATE_IDLE;
 }
