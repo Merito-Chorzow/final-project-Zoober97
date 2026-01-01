@@ -2,6 +2,7 @@
 #include "esp_log.h"
 #include <stdio.h>
 #include "ds18b20.h"
+#include "fsm.h"
 
 #define TAG "WEB"
 
@@ -17,6 +18,8 @@ static const char html_page[] =
 "<h1>ESP32 – Stacja Pogodowa</h1>"
 "<p>Temperatura: <span id='temp'>--</span> °C</p>"
 "<p>Średnia Temperatura: <span id='avg_temp'>--</span> °C</p>"
+"<p>Liczba błędów: <span id='err_count'>--</span></p>"
+"<p>Stan FSM: <span id='fsm_state'>--</span></p>"
 "<script>"
 "setInterval(() => {"
 " fetch('/temp').then(r => r.text()).then(t => {"
@@ -25,7 +28,16 @@ static const char html_page[] =
 " fetch('/avg_temp').then(r => r.text()).then(t => {"
 "   document.getElementById('avg_temp').innerText = t;"
 " });"
+" fetch('/err_count').then(r => r.text()).then(t => {"
+"   document.getElementById('err_count').innerText = t;"
+" });"
 "}, 1000);"
+
+"setInterval(() => {"
+" fetch('/fsm_state').then(r => r.text()).then(t => {"
+"   document.getElementById('fsm_state').innerText = t;"
+" });"
+"}, 100);"
 "</script>"
 "</body>"
 "</html>";
@@ -50,6 +62,22 @@ static esp_err_t avg_temp_get_handler(httpd_req_t *req)
 {
     char buf[16];
     snprintf(buf, sizeof(buf), "%.2f", avg_get());
+    httpd_resp_send(req, buf, HTTPD_RESP_USE_STRLEN);
+    return ESP_OK;
+}
+
+static esp_err_t err_count_get_handler(httpd_req_t *req)
+{
+    char buf[16];
+    snprintf(buf, sizeof(buf), "%d", error_count);
+    httpd_resp_send(req, buf, HTTPD_RESP_USE_STRLEN);
+    return ESP_OK;
+}
+
+static esp_err_t fsm_state_get_handler(httpd_req_t *req)
+{
+    char buf[16];
+    snprintf(buf, sizeof(buf), "%d", fsm_get_state());
     httpd_resp_send(req, buf, HTTPD_RESP_USE_STRLEN);
     return ESP_OK;
 }
@@ -79,9 +107,23 @@ void web_server_start()
         .handler = avg_temp_get_handler
     };
 
+    httpd_uri_t err_count = {
+        .uri = "/err_count",
+        .method = HTTP_GET,
+        .handler = err_count_get_handler
+    };
+
+    httpd_uri_t fsm_state = {
+        .uri = "/fsm_state",
+        .method = HTTP_GET,
+        .handler = fsm_state_get_handler
+    };
+
     httpd_register_uri_handler(server, &root);
     httpd_register_uri_handler(server, &temp);
     httpd_register_uri_handler(server, &avg_temp);
+    httpd_register_uri_handler(server, &err_count);
+    httpd_register_uri_handler(server, &fsm_state);
 
     ESP_LOGI(TAG, "HTTP server started");
 }

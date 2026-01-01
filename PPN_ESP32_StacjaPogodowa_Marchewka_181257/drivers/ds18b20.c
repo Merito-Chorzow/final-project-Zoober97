@@ -1,6 +1,7 @@
 #include "ds18b20.h"
 #include "driver/gpio.h"
 #include "esp_rom_sys.h"
+#include "fsm.h"
 
 #define DS_PIN GPIO_NUM_4
 
@@ -81,16 +82,24 @@ void ds18b20_init(void)
 //Read temperature from DS18B20 sensor
 float ds18b20_read(void)
 {
-    if (!ow_reset())
+    if(fsm_get_state() == STATE_FAULT){
         return NAN;
+    }
+    if (!ow_reset())
+    {
+        fsm_error();
+        return NAN;
+    }
 
     ow_write_byte(0xCC); // SKIP ROM
     ow_write_byte(0x44); // CONVERT T
     esp_rom_delay_us(750000);
 
     if (!ow_reset())
+    {
+        fsm_error();
         return NAN;
-
+    }
     ow_write_byte(0xCC);
     ow_write_byte(0xBE); // READ SCRATCHPAD
 

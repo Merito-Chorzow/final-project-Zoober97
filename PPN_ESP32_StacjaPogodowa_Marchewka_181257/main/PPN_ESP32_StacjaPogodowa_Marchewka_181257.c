@@ -33,6 +33,10 @@ void app_main(void)
     //     vTaskDelay(pdMS_TO_TICKS(500));
     //     gpio_set_level(LED_GPIO, 0);
 
+        if(fsm_get_state() == STATE_FAULT){
+            vTaskDelay(pdMS_TO_TICKS(period_ms));
+            continue;
+        }
         fsm_idle();
         vTaskDelay(pdMS_TO_TICKS(period_ms));
         fsm_start();

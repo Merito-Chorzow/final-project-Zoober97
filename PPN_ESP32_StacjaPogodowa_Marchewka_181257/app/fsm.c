@@ -4,7 +4,7 @@
 #define TAG "FSM"
 
 static system_state_t state = STATE_INIT;
-
+int error_count = 0;
 
 // Initialize the FSM
 void fsm_init(void)
@@ -39,12 +39,15 @@ void fsm_reset()
 void fsm_error()
 {
     ESP_LOGI(TAG, "FSM ERROR");
+    error_count++;
     state = STATE_FAULT;
 }
 
 // Set the FSM to IDLE state
 void fsm_idle()
 {
-    //ESP_LOGI(TAG, "FSM IDLE");
-    state = STATE_IDLE;
+    if(state != STATE_FAULT){
+        //ESP_LOGI(TAG, "FSM IDLE");
+        state = STATE_IDLE;
+    }
 }

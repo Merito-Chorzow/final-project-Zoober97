@@ -1,5 +1,6 @@
 #pragma once
 
+extern int error_count;
 typedef enum {
     STATE_INIT,
     STATE_IDLE,
